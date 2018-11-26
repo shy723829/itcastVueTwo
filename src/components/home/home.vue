@@ -11,7 +11,7 @@
                     </div>
                 </el-col>
                 <el-col :span="1">
-                    <a href="#">退出</a>
+                    <a @click.prevent="hendeLogout()">退出</a>
                 </el-col>
             </el-row>
         </el-header>
@@ -98,14 +98,28 @@
                     </el-submenu>
                 </el-menu>
             </el-aside>
-            <el-main class="right">Main</el-main>
+            <el-main class="right">
+                <router-view></router-view>
+            </el-main>
         </el-container>
     </el-container>
 </template>
 
 <script>
 export default {
-
+    beforeCreate(){
+        const token = localStorage.getItem('token')
+        if(!token){
+            this.$router.push({name:'login'})
+        }
+    },
+    methods:{
+        hendeLogout(){
+            localStorage.clear()
+            this.$router.push({name:'login'})
+            this.$message.success('退出成功')
+        }
+    }
 }
 </script>
 
